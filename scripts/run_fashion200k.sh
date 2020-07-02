@@ -6,7 +6,7 @@ export PYTHONIOENCODING=utf-8 # important: used to read the text file in python3
 
 DATASET=fashion200k
 PRETRAIN_DIR='pretrain_model/mobilenet_v1/mobilenet_v1_1.0_224.ckpt'
-CNN='mobilenet_v1_ms'
+CNN='mobilenet_v1_ml'
 IMG_SIZE=224
 AUGMENT=False
 PRE_TEXT=glove/fashion200k.42B.300d.npy

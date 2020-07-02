@@ -21,7 +21,7 @@
 
 (2) Follow steps in `scripts/prepare_data.sh` to prepare datasets. Note: `fashion200k` and `shoes` can be downloaded manually. Relevant `py` files for data preparation are detailed below.
 * `download_fashion_iq.py`: crawl the image data from Amazon websites. Note that some url links might be broken. 
-* `generate_groundtruth.py`: generate some `py` files that charaterize the groundtruth annotations during test time. 
+* `generate_groundtruth.py`: generate some `.npy` files that charaterize the groundtruth annotations during test time. 
 * `read_glove.py`: prepare the pre-trained `glove` word embeddings to initialize the text model (i.e. LSTM). 
 
 ## Running Experiments

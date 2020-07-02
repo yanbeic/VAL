@@ -1,0 +1,1 @@
+This folder stores the log files that record the test results.

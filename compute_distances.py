@@ -6,9 +6,6 @@ import time
 import numpy as np
 import math
 
-# export CUDA_VISIBLE_DEVICES=2
-# python test_modif.py --feature_dir='save_features/fashion200k/tirg_mobilenet_v1_stage2' --batch_size=20
-
 tf.app.flags.DEFINE_string(
   'feature_dir', None, 'directory to extract the feature.')
 tf.app.flags.DEFINE_string(

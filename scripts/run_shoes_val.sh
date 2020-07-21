@@ -1,32 +1,30 @@
 #!/usr/bin/sh
 #!/usr/bin/env python
+# run shoes on VAL without GloVe feature initialization
 
 export CUDA_VISIBLE_DEVICES=0
-export PYTHONIOENCODING=utf-8 # important: used to read the text file in python3 
+export PYTHONIOENCODING=utf-8 # important: used to read the text file in python3
 
-DATASET=fashion200k
-PRETRAIN_DIR='pretrain_model/mobilenet_v1/mobilenet_v1_1.0_224.ckpt'
-CNN='mobilenet_v1_ml'
-IMG_SIZE=224
+DATASET=shoes
+PRETRAIN_DIR='pretrain_model/resnet_v2_50/resnet_v2_50.ckpt'
+CNN='resnet_v2_50_ml' 
+IMG_SIZE=256
 AUGMENT=False
-PRE_TEXT=glove/fashion200k.42B.300d.npy
 TEXT_MODEL=lstm
 MODEL_NAME=val_${CNN}
 
-STAGE1_DIR='save_model/fashion200k/'${MODEL_NAME}
-DATA_DIR='datasets/fashion200k'
-FEAT_DIR='save_model/fashion200k/'${MODEL_NAME}
+STAGE1_DIR='save_model/shoes/'${MODEL_NAME}
+DATA_DIR=
+FEAT_DIR='save_model/shoes/'${MODEL_NAME}
 TEXT_SIZE=1024
 JOINT_SIZE=512
-WORD_SIZE=300
+WORD_SIZE=512
 
-python train_val_fashion200k.py \
+python train_val.py \
   --checkpoint_dir=${STAGE1_DIR} \
   --pretrain_checkpoint_dir=${PRETRAIN_DIR} \
   --image_model=${CNN} \
   --data_path=${DATA_DIR} \
-  --augmentation=${AUGMENT} \
-  --image_size=${IMG_SIZE} \
   --batch_size=32 \
   --print_span=20 \
   --save_length=10000 \
@@ -36,20 +34,21 @@ python train_val_fashion200k.py \
   --text_embedding_size=${TEXT_SIZE} \
   --margin=0.2 \
   --text_projection_dropout=0.9 \
-  --init_learning_rate=0.0002 \
   --dataset=${DATASET} \
-  --train_length=160000 \
+  --train_length=30000 \
+  --constant_lr=True \
+  --image_size=${IMG_SIZE} \
   --image_feature_name='before_pool' \
-  --word_embedding_dir=${PRE_TEXT} 
+  --augmentation=${AUGMENT}
 
-for i in {25,26}
+
+for i in {2,3}
 do
   python extract_features_val.py \
     --checkpoint_dir=${STAGE1_DIR} \
     --data_path=${DATA_DIR} \
     --feature_dir=${FEAT_DIR} \
     --image_model=${CNN} \
-    --image_size=${IMG_SIZE} \
     --text_model=${TEXT_MODEL} \
     --joint_embedding_size=${JOINT_SIZE} \
     --word_embedding_size=${WORD_SIZE} \
@@ -57,7 +56,8 @@ do
     --query_images=True \
     --text_projection_dropout=0.9 \
     --dataset=${DATASET} \
-    --remove_rare_words=False \
+    --remove_rare_words=True \
+    --image_size=${IMG_SIZE} \
     --image_feature_name='before_pool' \
     --exact_model_checkpoint=model.ckpt-${i}0000 
 
@@ -66,7 +66,6 @@ do
     --data_path=${DATA_DIR} \
     --feature_dir=${FEAT_DIR} \
     --image_model=${CNN} \
-    --image_size=${IMG_SIZE} \
     --text_model=${TEXT_MODEL} \
     --joint_embedding_size=${JOINT_SIZE} \
     --word_embedding_size=${WORD_SIZE} \
@@ -74,9 +73,11 @@ do
     --query_images=False \
     --text_projection_dropout=0.9 \
     --dataset=${DATASET} \
-    --remove_rare_words=False \
+    --remove_rare_words=True \
+    --image_size=${IMG_SIZE} \
     --image_feature_name='before_pool' \
     --exact_model_checkpoint=model.ckpt-${i}0000 
     
-  python test_val.py --feature_dir=${FEAT_DIR} --batch_size=20 --dataset=${DATASET} --subset=${SUBSET} 
+  python test_val.py --feature_dir=${FEAT_DIR} --batch_size=20 --dataset=${DATASET} --data_path='' 
 done
+

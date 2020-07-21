@@ -1,5 +1,6 @@
 #!/usr/bin/sh
 #!/usr/bin/env python
+# run fashion200k on VAL without GloVe feature initialization
 
 export CUDA_VISIBLE_DEVICES=0
 export PYTHONIOENCODING=utf-8 # important: used to read the text file in python3 
@@ -9,7 +10,6 @@ PRETRAIN_DIR='pretrain_model/mobilenet_v1/mobilenet_v1_1.0_224.ckpt'
 CNN='mobilenet_v1_ml'
 IMG_SIZE=224
 AUGMENT=False
-PRE_TEXT=glove/fashion200k.42B.300d.npy
 TEXT_MODEL=lstm
 MODEL_NAME=val_${CNN}
 
@@ -18,7 +18,7 @@ DATA_DIR='datasets/fashion200k'
 FEAT_DIR='save_model/fashion200k/'${MODEL_NAME}
 TEXT_SIZE=1024
 JOINT_SIZE=512
-WORD_SIZE=300
+WORD_SIZE=512
 
 python train_val_fashion200k.py \
   --checkpoint_dir=${STAGE1_DIR} \
@@ -39,8 +39,7 @@ python train_val_fashion200k.py \
   --init_learning_rate=0.0002 \
   --dataset=${DATASET} \
   --train_length=160000 \
-  --image_feature_name='before_pool' \
-  --word_embedding_dir=${PRE_TEXT} 
+  --image_feature_name='before_pool'
 
 for i in {25,26}
 do

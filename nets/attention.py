@@ -65,8 +65,8 @@ def attention_model(images, texts, model_name, is_training=False, weight_decay=0
         self_att = slim.conv2d(self_att, img_channels, [1, 1])
 
         ##############################
-        joint_w = tf.get_variable('r_weight', [], initializer=tf.constant_initializer(0.0))
-        self_w = tf.get_variable('weight', [], initializer=tf.constant_initializer(1.0))
+        joint_w = tf.get_variable('r_weight', [], initializer=tf.constant_initializer(1.0))
+        self_w = tf.get_variable('weight', [], initializer=tf.constant_initializer(0.0))
 
         composite_features = joint_w*joint_att*images + self_w*self_att
 

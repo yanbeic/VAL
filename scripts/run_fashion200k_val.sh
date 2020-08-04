@@ -41,7 +41,7 @@ python train_val_fashion200k.py \
   --train_length=160000 \
   --image_feature_name='before_pool'
 
-for i in {25,26}
+for i in {15,16}
 do
   python extract_features_val.py \
     --checkpoint_dir=${STAGE1_DIR} \

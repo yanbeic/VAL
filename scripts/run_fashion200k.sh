@@ -42,7 +42,7 @@ python train_val_fashion200k.py \
   --image_feature_name='before_pool' \
   --word_embedding_dir=${PRE_TEXT} 
 
-for i in {25,26}
+for i in {15,16}
 do
   python extract_features_val.py \
     --checkpoint_dir=${STAGE1_DIR} \

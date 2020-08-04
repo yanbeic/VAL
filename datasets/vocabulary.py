@@ -3,17 +3,22 @@ import nltk
 
 class SimpleVocab():
 
-  def __init__(self):
+  def __init__(self, use_nltk=True):
     super()
 
     self.word2id = {}
     self.wordcount = {}
     self.word2id['<UNK>'] = 0
     self.wordcount['<UNK>'] = 9e9
-
+    self.use_nltk = use_nltk
 
   def tokenize_text(self, text):
-    tokens = nltk.tokenize.word_tokenize(text.lower())
+    if self.use_nltk:
+      tokens = nltk.tokenize.word_tokenize(text.lower())
+    else:
+      text = text.encode('ascii', 'ignore').decode('ascii')
+      tokens = str(text).lower().translate(str.maketrans('','',string.punctuation)).strip().split()
+
     return tokens
 
 

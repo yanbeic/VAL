@@ -151,7 +151,7 @@ def main():
   trainset.caption_index_init_()
   max_steps = FLAGS.train_length
 
-  vocab = vocabulary.SimpleVocab()
+  vocab = vocabulary.SimpleVocab(use_nltk=False)
   all_texts = trainset.get_all_texts()
 
   for text in all_texts:

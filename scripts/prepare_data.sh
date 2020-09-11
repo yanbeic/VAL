@@ -45,6 +45,7 @@ python generate_groundtruth.py --dataset='fashion200k'
 ## generate some needed 'txt' files
 python generate_caption_pairs.py --dataset='shoes'
 python generate_tags.py --dataset='shoes'
+python generate_tags_fashion_iq.py 
 
 ## generate ".py" files used in test time
 python generate_groundtruth.py --dataset='shoes' --data_path=''

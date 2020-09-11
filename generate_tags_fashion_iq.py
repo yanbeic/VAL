@@ -24,6 +24,7 @@ writepaths = [
 folder = 'fashion_iq'
 imgfolder = ['dress', 'shirt', 'toptee']
 
+def remove_repplicate_words(text):
   text = text.lower()
   text = text.split()
   return " ".join(sorted(set(text), key=text.index))

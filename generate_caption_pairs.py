@@ -69,6 +69,26 @@ if FLAGS.dataset == 'fashion_iq':
       print(readpaths[p])
       print(num_pairs)
 
+  #### generate files fashion_iq-val-cap.txt and fashion_iq-train-cap.txt
+  writepaths = [
+    'datasets/fashion_iq/captions_pairs/fashion_iq-val-cap.txt',
+    'datasets/fashion_iq/captions_pairs/fashion_iq-train-cap.txt'
+  ]
+
+  for p in range(2):
+    readpath = readpaths[p]
+    writepath = writepaths[p]
+    num_pairs = 0
+    with open(writepath, 'a') as f:
+      for k in range(3):
+        path = os.path.join('datasets', folder, 'image_data', imgfolder[k])
+        imgnames_all = os.listdir(path)
+        imgpaths_all = [os.path.join(imgfolder[k], imgname) for imgname in imgnames_all]
+        with open(readpath[k]) as handle:
+          dictdump = json.loads(handle.read())
+        num_pairs += write_to_file(dictdump, f, imgnames_all, imgpaths_all)
+    print(num_pairs)
+
 
 elif FLAGS.dataset == 'shoes':
 
